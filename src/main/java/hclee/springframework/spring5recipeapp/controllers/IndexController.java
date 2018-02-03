@@ -1,13 +1,12 @@
 package hclee.springframework.spring5recipeapp.controllers;
 
 import hclee.springframework.spring5recipeapp.service.RecipeService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.concurrent.CompletableFuture;
-
+@Slf4j
 @Controller
 public class IndexController {
 
@@ -25,6 +24,7 @@ public class IndexController {
     }*/
     @GetMapping({"", "/", "/index"})
     public String getIndexPage(Model model) {
+        log.debug("Getting Index page");
         model.addAttribute("recipes", recipeService.getRecipes());
         return "index";
     }
