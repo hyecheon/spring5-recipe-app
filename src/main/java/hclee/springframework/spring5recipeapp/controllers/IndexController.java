@@ -19,6 +19,7 @@ public class IndexController {
 
     /*@GetMapping({"", "/", "/index"})
     public CompletableFuture<String> getIndexPage(Model model) {
+        log.debug("Getting Index page");
         model.addAttribute("recipes", recipeService.getRecipes());
         return CompletableFuture.supplyAsync(() -> "index");
     }*/
