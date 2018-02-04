@@ -96,7 +96,9 @@
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <version>2.20</version>
                 <configuration>
-                    <includes>**/*IT.java</includes>
+                    <includes>
+                        <include>**/*IT.java</include>
+                    </includes>
                     <additionalClasspathElements>
                         <additionalClasspathElement>${basedir}/target/classes</additionalClasspathElement>
                     </additionalClasspathElements>
