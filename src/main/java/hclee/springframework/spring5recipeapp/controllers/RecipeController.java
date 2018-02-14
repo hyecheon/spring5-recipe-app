@@ -1,15 +1,18 @@
 package hclee.springframework.spring5recipeapp.controllers;
 
+import hclee.springframework.spring5recipeapp.commands.RecipeCommand;
 import hclee.springframework.spring5recipeapp.domain.Recipe;
-import hclee.springframework.spring5recipeapp.service.RecipeService;
+import hclee.springframework.spring5recipeapp.exceptions.NotFoundException;
+import hclee.springframework.spring5recipeapp.services.RecipeService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
+@Slf4j
 @Controller
-@RequestMapping("/recipe")
 public class RecipeController {
     final private RecipeService recipeService;
 
@@ -17,10 +20,45 @@ public class RecipeController {
         this.recipeService = recipeService;
     }
 
-    @GetMapping("/show/{id}")
+
+    @GetMapping("/recipe/{id}/show")
     public String showById(Model model, @PathVariable Long id) {
-        final Recipe recipe = recipeService.findById(id);
-        model.addAttribute("recipe", recipe);
+        final Recipe byId = recipeService.findById(id);
+        model.addAttribute("recipe", byId);
         return "recipe/show";
+    }
+
+    @GetMapping("/recipe/new")
+    public String newRecipe(Model model) {
+        model.addAttribute("recipe", new RecipeCommand());
+        return "recipe/recipeform";
+    }
+
+    @GetMapping("/recipe/{id}/update")
+    public String updateRecipe(@PathVariable Long id, Model model) {
+        model.addAttribute("recipe", recipeService.findCommandById(id));
+        return "recipe/recipeform";
+    }
+
+    @PostMapping("/recipe")
+    public String saveOrUpdate(@ModelAttribute RecipeCommand command) {
+        final RecipeCommand saveRecipeCommand = recipeService.saveRecipeCommand(command);
+        return "redirect:/recipe/" + saveRecipeCommand.getId() + "/show";
+    }
+
+    @GetMapping("recipe/{id}/delete")
+    public String deleteById(@PathVariable String id) {
+        log.debug("Deleting id: " + id);
+        recipeService.deleteById(Long.valueOf(id));
+        return "redirect:/";
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NotFoundException.class)
+    public ModelAndView handleNotFound() {
+        log.error("Handling not found exception");
+        final ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("404error");
+        return modelAndView;
     }
 }

@@ -5,6 +5,7 @@ import hclee.springframework.spring5recipeapp.converters.RecipeCommandToRecipe;
 import hclee.springframework.spring5recipeapp.converters.RecipeToRecipeCommand;
 import hclee.springframework.spring5recipeapp.domain.Recipe;
 import hclee.springframework.spring5recipeapp.repository.RecipeRepository;
+import hclee.springframework.spring5recipeapp.services.RecipeService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

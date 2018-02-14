@@ -1,6 +1,6 @@
 package hclee.springframework.spring5recipeapp.controllers;
 
-import hclee.springframework.spring5recipeapp.service.RecipeService;
+import hclee.springframework.spring5recipeapp.services.RecipeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

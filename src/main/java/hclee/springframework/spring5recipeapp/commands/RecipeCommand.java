@@ -17,10 +17,11 @@ public class RecipeCommand {
     private String description;
     private Integer prepTime;
     private Integer cookTime;
-    private Integer serving;
+    private Integer servings;
     private String source;
     private String url;
     private String directions;
+    private Byte[] image;
     private Set<IngredientCommand> ingredients = new HashSet<>();
     private Difficulty difficulty;
     private NotesCommand notes;
