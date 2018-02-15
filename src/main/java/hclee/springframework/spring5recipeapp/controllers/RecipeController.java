@@ -8,12 +8,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.validation.Valid;
 
 @Slf4j
 @Controller
 public class RecipeController {
+    final private String RECIPE_RECIPEFOMR_URL = "recipe/recipeform";
     final private RecipeService recipeService;
 
     public RecipeController(RecipeService recipeService) {
@@ -41,7 +45,11 @@ public class RecipeController {
     }
 
     @PostMapping("/recipe")
-    public String saveOrUpdate(@ModelAttribute RecipeCommand command) {
+    public String saveOrUpdate(@Valid @ModelAttribute RecipeCommand command, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            bindingResult.getAllErrors().forEach(objectError -> log.debug(objectError.toString()));
+            return RECIPE_RECIPEFOMR_URL;
+        }
         final RecipeCommand saveRecipeCommand = recipeService.saveRecipeCommand(command);
         return "redirect:/recipe/" + saveRecipeCommand.getId() + "/show";
     }
